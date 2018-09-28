@@ -3,6 +3,7 @@ package starmanager
 import (
 	"context"
 	"log"
+	"math/rand"
 	"net/url"
 	"os"
 	"os/user"
@@ -11,7 +12,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"math/rand"
 
 	"golang.org/x/oauth2"
 
@@ -142,7 +142,7 @@ func (s *StarManager) SaveStarredPage(pageno int, responses chan *github.Respons
 	)
 	if err != nil {
 		log.Printf(
-			"An error occurred while attempting to fetch page %d of %s's GitHub stars!",
+			"An error occurred while atresultsting to fetch page %d of %s's GitHub stars!",
 			pageno,
 			s.Username,
 		)
@@ -154,7 +154,7 @@ func (s *StarManager) SaveStarredPage(pageno int, responses chan *github.Respons
 		responses <- response
 	}
 
-	log.Printf("Attempting to save starred projects on page %d...\n", pageno)
+	log.Printf("Atresultsting to save starred projects on page %d...\n", pageno)
 	for _, r := range firstPage {
 		go s.SaveStarredRepository(r.Repository, wg)
 	}
@@ -168,11 +168,11 @@ func (s *StarManager) SaveAllStars() (bool, error) {
 	responses := make(chan *github.Response, 1)
 
 	// Fetch the first page to determine the last page number from the response "Link" header
-	log.Printf("Attempting to save first page...")
+	log.Printf("Atresultsting to save first page...")
 	go s.SaveStarredPage(1, responses, &wg)
 	firstPageResponse := <-responses
 
-	log.Printf("Attempting to save the rest of the pages...")
+	log.Printf("Atresultsting to save the rest of the pages...")
 	for i := 2; i <= firstPageResponse.LastPage; i++ {
 		go s.SaveStarredPage(i, nil, &wg)
 	}
@@ -189,32 +189,37 @@ func (s *StarManager) SaveIfEmpty() {
 	}
 }
 
+// KV is a generic struct that maintains a string key - int value pair ( :( ).
+type KV struct {
+	Key   string
+	Value int
+}
+
 // GetTopics returns topics for a repository, otherwise if no repository is passed, returns
 // a list of all topics
-func (s *StarManager) GetTopics() []string {
+func (s *StarManager) GetTopics() []KV {
 	stars := []Star{}
-	allTopics := []string{}
-	uniqueTopics := []string{}
-	keys := map[string]bool{}
+	topicCounts := map[string]int{}
 
 	s.DB.All(&stars)
 
 	for _, star := range stars {
-		allTopics = append(allTopics, star.Topics...)
-	}
-
-	for _, topic := range allTopics {
-		if _, value := keys[topic]; !value {
-			keys[topic] = true
-			uniqueTopics = append(uniqueTopics, topic)
+		for _, topic := range star.Topics {
+			topicCounts[topic]++
 		}
 	}
 
-	sort.Slice(uniqueTopics, func(i, j int) bool {
-		return uniqueTopics[i] < uniqueTopics[j]
+	results := []KV{}
+
+	for topic, count := range topicCounts {
+		results = append(results, KV{topic, count})
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Value > results[j].Value
 	})
 
-	return uniqueTopics
+	return results
 }
 
 // GetRandomProjects returns random projects given a project count to return, and an optional

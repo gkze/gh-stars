@@ -35,8 +35,8 @@ func main() {
 			Usage: "list all topics of starred projects",
 			Action: func(c *cli.Context) error {
 				sm.SaveIfEmpty()
-				for _, t := range sm.GetTopics() {
-					fmt.Println(t)
+				for _, pair := range sm.GetTopics() {
+					fmt.Println(pair.Key, pair.Value)
 				}
 
 				return nil
