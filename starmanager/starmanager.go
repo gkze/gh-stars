@@ -154,7 +154,7 @@ func (s *StarManager) SaveStarredPage(pageno int, responses chan *github.Respons
 		responses <- response
 	}
 
-	log.Printf("Atresultsting to save starred projects on page %d...\n", pageno)
+	log.Printf("Attempting to save starred projects on page %d...\n", pageno)
 	for _, r := range firstPage {
 		go s.SaveStarredRepository(r.Repository, wg)
 	}
@@ -168,11 +168,11 @@ func (s *StarManager) SaveAllStars() (bool, error) {
 	responses := make(chan *github.Response, 1)
 
 	// Fetch the first page to determine the last page number from the response "Link" header
-	log.Printf("Atresultsting to save first page...")
+	log.Printf("Attempting to save first page...")
 	go s.SaveStarredPage(1, responses, &wg)
 	firstPageResponse := <-responses
 
-	log.Printf("Atresultsting to save the rest of the pages...")
+	log.Printf("Attempting to save the rest of the pages...")
 	for i := 2; i <= firstPageResponse.LastPage; i++ {
 		go s.SaveStarredPage(i, nil, &wg)
 	}
