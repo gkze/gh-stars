@@ -311,7 +311,10 @@ func (s *StarManager) RemoveOlderThan(months int) error {
 	}
 
 	// Cannot close channel in main goroutine as it will block
-	go func() { close(toDelete) }()
+	go func() {
+		wg.Wait()
+		close(toDelete)
+	}()
 
 	for star := range toDelete {
 		go s.RemoveStar(star, &wg)

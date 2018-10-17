@@ -11,15 +11,17 @@ require (
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/jdxcode/netrc v0.0.0-20180207092346-e1a19c977509
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/kr/pty v1.1.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.2.2 // indirect
 	github.com/urfave/cli v1.20.0
 	github.com/vmihailenco/msgpack v4.0.0+incompatible // indirect
 	go.etcd.io/bbolt v1.3.0 // indirect
-	golang.org/x/net v0.0.0-20180921000356-2f5d2388922f // indirect
-	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
+	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e // indirect
+	golang.org/x/net v0.0.0-20181011144130-49bb7cea24b1 // indirect
+	golang.org/x/oauth2 v0.0.0-20181003184128-c57b0facaced
 	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f // indirect
-	golang.org/x/sys v0.0.0-20180921163948-d47a0f339242 // indirect
+	golang.org/x/sys v0.0.0-20181011152604-fa43e7bc11ba // indirect
 	google.golang.org/appengine v1.2.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
