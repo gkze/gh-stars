@@ -62,7 +62,7 @@ func main() {
 			},
 			Action: func(c *cli.Context) error {
 				sm.SaveIfEmpty()
-				stars, err := sm.GetRandomProjects(c.Int("count"), c.String("languaage"), c.String("topic"))
+				stars, err := sm.GetRandomProjects(c.Int("count"), c.String("language"), c.String("topic"))
 				if err != nil {
 					log.Printf(err.Error())
 				}
