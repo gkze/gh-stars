@@ -24,6 +24,12 @@ import (
 // GITHUB - the GitHub API host
 const GITHUB string = "api.github.com"
 
+// CACHEPATH - the path to the cache db file
+const CACHEPATH = ".cache"
+
+// CACHEFILE - the filename of the db cache
+const CACHEFILE = "stars.db"
+
 // PAGESIZE - the default response page size (GitHub maximum is 100 so we use that)
 const PAGESIZE int = 100
 
@@ -64,7 +70,22 @@ func New() (*StarManager, error) {
 		return nil, err
 	}
 
-	db, err := storm.Open(filepath.Join(currentUser.HomeDir, ".cache/stars.db"), storm.Batch())
+	cacheFullPath := filepath.Join(currentUser.HomeDir, CACHEPATH, CACHEFILE)
+	_, ferr := os.Stat(cacheFullPath)
+	if ferr != nil && os.IsNotExist(ferr) {
+		mkdirErr := os.Mkdir(filepath.Join(currentUser.HomeDir, CACHEPATH), 0700)
+		if mkdirErr != nil {
+			log.Printf(
+				"An error occurred while attempting to create %s: %s\n",
+				CACHEPATH,
+				mkdirErr.Error(),
+			)
+
+			return nil, err
+		}
+	}
+
+	db, err := storm.Open(cacheFullPath, storm.Batch())
 	if err != nil {
 		log.Printf("An error occurred opening the db! %v", err.Error())
 
