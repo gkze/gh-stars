@@ -70,18 +70,20 @@ func New() (*StarManager, error) {
 		return nil, err
 	}
 
-	cacheFullPath := filepath.Join(currentUser.HomeDir, CACHEPATH, CACHEFILE)
-	_, ferr := os.Stat(cacheFullPath)
-	if ferr != nil && os.IsNotExist(ferr) {
-		mkdirErr := os.Mkdir(filepath.Join(currentUser.HomeDir, CACHEPATH), 0700)
-		if mkdirErr != nil {
-			log.Printf(
-				"An error occurred while attempting to create %s: %s\n",
-				CACHEPATH,
-				mkdirErr.Error(),
-			)
+	cacheDir := filepath.Join(currentUser.HomeDir, CACHEPATH)
+	cacheFullPath := filepath.Join(cacheDir, CACHEFILE)
+	toCreate := []struct {
+		path string
+		mode os.FileMode
+	}{
+		{cacheDir, os.ModeDir},
+		{cacheFullPath, 0},
+	}
 
-			return nil, err
+	for _, p := range toCreate {
+		err := utils.CreateIfNotExists(p.path, p.mode)
+		if err != nil {
+			log.Printf("An error occurred while attempting to create %s: %v", p.path, err.Error())
 		}
 	}
 

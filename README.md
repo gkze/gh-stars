@@ -30,7 +30,6 @@ machine api.github.com
 Usage:
 
 ```bash
-$ stars
 NAME:
    stars - Command-line interface to YOUR GitHub stars
 
@@ -38,7 +37,7 @@ USAGE:
    stars [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.0
+   0.3.4
 
 COMMANDS:
      save         Save all stars
