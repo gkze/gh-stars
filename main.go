@@ -106,10 +106,14 @@ func main() {
 					Value: 2,
 					Usage: "Number of months to delete projects older than",
 				},
+				cli.BoolFlag{
+					Name:  "include-archived, a",
+					Usage: "Include archived stars",
+				},
 			},
 			Action: func(c *cli.Context) error {
 				sm.SaveIfEmpty()
-				if err := sm.RemoveOlderThan(c.Int("months")); err != nil {
+				if err := sm.Cleanup(c.Int("months"), c.Bool("include-archived")); err != nil {
 					return err
 				}
 

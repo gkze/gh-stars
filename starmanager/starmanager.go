@@ -39,6 +39,7 @@ type Star struct {
 	URL         string    `storm:"id,index,unique"`
 	Language    string    `storm:"index"`
 	Stargazers  int
+	Archived    bool     `storm:"index"`
 	Description string   `storm:"index"`
 	Topics      []string `storm:"index"`
 }
@@ -137,6 +138,7 @@ func (s *StarManager) SaveStarredRepository(repo *github.Repository, wg *sync.Wa
 		Stargazers:  *repo.StargazersCount,
 		Description: desc,
 		Topics:      repo.Topics,
+		Archived:    *repo.Archived,
 	})
 	if err != nil {
 		return err
@@ -308,12 +310,12 @@ func (s *StarManager) RemoveStar(star *Star, wg *sync.WaitGroup) (bool, error) {
 	return true, nil
 }
 
-// RemoveOlderThan removes stars older than a specified time
-func (s *StarManager) RemoveOlderThan(months int) error {
+// Cleanup removes stars older than a specified time in months and optionally archived stars.
+func (s *StarManager) Cleanup(age int, archived bool) error {
 	allStars := []*Star{}
 	toDelete := make(chan *Star)
 	wg := sync.WaitGroup{}
-	then := time.Now().AddDate(0, -months, 0)
+	then := time.Now().AddDate(0, -age, 0)
 
 	if err := s.DB.All(&allStars); err != nil {
 		return err
@@ -321,8 +323,13 @@ func (s *StarManager) RemoveOlderThan(months int) error {
 
 	log.Printf("Filtering stars to delete (from %d)...", len(allStars))
 	for _, star := range allStars {
-		if star.PushedAt.Before(then) {
-			log.Printf("Queueing %s for deletion (last pushed at %+v)", star.URL, star.PushedAt)
+		if star.PushedAt.Before(then) || star.Archived == archived {
+			log.Printf(
+				"Queueing %s for deletion (last pushed at %+v, archive status: %t)",
+				star.URL,
+				star.PushedAt,
+				star.Archived,
+			)
 
 			go func(ch chan *Star, s *Star, wg *sync.WaitGroup) {
 				wg.Add(1)
