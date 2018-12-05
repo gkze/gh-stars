@@ -37,12 +37,12 @@ USAGE:
    stars [global options] command [command options] [arguments...]
 
 VERSION:
-   0.3.4
+   0.3.5
 
 COMMANDS:
      save         Save all stars
      list-topics  list all topics of starred projects
-     random       Browse random stars
+     show         Show popular stars given filters
      clear        Clear local stars cache
      cleanup      Clean up old stars
      help, h      Shows a list of commands or help for one command
