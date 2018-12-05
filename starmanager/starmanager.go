@@ -2,6 +2,7 @@ package starmanager
 
 import (
 	"context"
+	"errors"
 	"log"
 	"math/rand"
 	"net/url"
@@ -247,9 +248,9 @@ func (s *StarManager) GetTopics() []KV {
 	return results
 }
 
-// GetRandomProjects returns random projects given a project count to return, and an optional
+// GetProjects returns random projects given a project count to return, and an optional
 // language and topic to filter by.
-func (s *StarManager) GetRandomProjects(count int, language, topic string) ([]Star, error) {
+func (s *StarManager) GetProjects(count int, language, topic string, random bool) ([]Star, error) {
 	stars := []Star{}
 
 	if language != "" {
@@ -274,12 +275,24 @@ func (s *StarManager) GetRandomProjects(count int, language, topic string) ([]St
 		stars = topicStars
 	}
 
-	rand.Seed(time.Now().UTC().UnixNano())
-	rand.Shuffle(len(stars), func(i, j int) {
-		stars[i], stars[j] = stars[j], stars[i]
-	})
+	if random == true {
+		rand.Seed(time.Now().UTC().UnixNano())
+		rand.Shuffle(len(stars), func(i, j int) {
+			stars[i], stars[j] = stars[j], stars[i]
+		})
+	} else {
+		sort.Slice(stars, func(i, j int) bool { return stars[i].Stargazers > stars[j].Stargazers })
+	}
 
-	return stars[0:count], nil
+	if len(stars) > 0 {
+		if len(stars) > count {
+			return stars[0:count], nil
+		} else {
+			return stars, nil
+		}
+	}
+
+	return []Star{}, errors.New("No stars matching criteria found")
 }
 
 // RemoveStar unstars the project on Github and removes the star from the local cache.

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"text/tabwriter"
 
 	"github.com/gkze/stars/starmanager"
 	"github.com/urfave/cli"
@@ -44,13 +45,13 @@ func main() {
 			},
 		},
 		{
-			Name:  "random",
-			Usage: "Browse random stars",
+			Name:  "show",
+			Usage: "Show popular stars given filters",
 			Flags: []cli.Flag{
 				cli.IntFlag{
 					Name:  "count, c",
 					Value: 6,
-					Usage: "Number of random stars to browse",
+					Usage: "Number of random stars to show",
 				},
 				cli.StringFlag{
 					Name:  "language, l",
@@ -60,27 +61,80 @@ func main() {
 					Name:  "topic, t",
 					Usage: "Limit to projects with this topic",
 				},
+				cli.BoolFlag{
+					Name:  "random, r",
+					Usage: "Get random stars",
+				},
+				cli.BoolFlag{
+					Name:  "browse, b",
+					Usage: "Open stars in browser instead of writing them to stdout",
+				},
 			},
 			Action: func(c *cli.Context) error {
 				sm.SaveIfEmpty()
-				stars, err := sm.GetRandomProjects(c.Int("count"), c.String("language"), c.String("topic"))
+
+				stars, err := sm.GetProjects(
+					c.Int("count"),
+					c.String("language"),
+					c.String("topic"),
+					c.Bool("random"),
+				)
 				if err != nil {
 					log.Printf(err.Error())
+					return err
 				}
 
 				wg := sync.WaitGroup{}
-				for _, proj := range stars {
-					wg.Add(1)
-					go func(p starmanager.Star) {
-						defer wg.Done()
-						cmd := exec.Command("/usr/bin/open", p.URL)
-						err := cmd.Run()
+				w := tabwriter.NewWriter(os.Stdout, 0, 8, 0, '\t', 0)
 
-						if err != nil {
-							panic(err)
+				for i := 0; i < len(stars); i++ {
+					proj := stars[i]
+
+					if c.Bool("browse") == true {
+						wg.Add(1)
+
+						go func(p starmanager.Star) {
+							defer wg.Done()
+							cmd := exec.Command("/usr/bin/open", p.URL)
+							err := cmd.Run()
+
+							if err != nil {
+								panic(err)
+							}
+						}(proj)
+					} else {
+						if i == 0 {
+							if c.String("language") == "" {
+								fmt.Fprintf(w, "PUSHED\tSTARS\tLANGUAGE\tURL\tDESCRIPTION\n")
+							} else {
+								fmt.Fprintf(w, "PUSHED\tSTARS\tURL\tDESCRIPTION\n")
+							}
 						}
-					}(proj)
+
+						if c.String("language") == "" {
+							fmt.Fprintf(
+								w,
+								"%s\t%d\t%s\t%s\t%s\n",
+								proj.PushedAt,
+								proj.Stargazers,
+								proj.Language,
+								proj.URL,
+								proj.Description,
+							)
+						} else {
+							fmt.Fprintf(
+								w,
+								"%s\t%d\t%s\t%s\n",
+								proj.PushedAt,
+								proj.Stargazers,
+								proj.URL,
+								proj.Description,
+							)
+						}
+					}
 				}
+
+				w.Flush()
 				wg.Wait()
 
 				return nil
