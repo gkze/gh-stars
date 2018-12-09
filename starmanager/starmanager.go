@@ -19,7 +19,7 @@ import (
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
 	"github.com/gkze/stars/utils"
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v19/github"
 )
 
 // GITHUB - the GitHub API host
