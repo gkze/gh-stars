@@ -280,9 +280,9 @@ func (s *StarManager) GetProjects(count int, language, topic string, random bool
 		rand.Shuffle(len(stars), func(i, j int) {
 			stars[i], stars[j] = stars[j], stars[i]
 		})
+	} else {
+		sort.Slice(stars, func(i, j int) bool { return stars[i].Stargazers > stars[j].Stargazers })
 	}
-
-	sort.Slice(stars, func(i, j int) bool { return stars[i].Stargazers > stars[j].Stargazers })
 
 	if len(stars) > 0 {
 		if len(stars) > count {
