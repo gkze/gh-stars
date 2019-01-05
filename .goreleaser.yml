@@ -1,23 +1,33 @@
-# This is an example goreleaser.yaml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
-builds:
-- env:
-  - GO111MODULE=on
-  - CGO_ENABLED=0
-archive:
-  replacements:
+---
+archive: 
+  replacements: 
+    386: i386
+    amd64: x86_64
     darwin: Darwin
     linux: Linux
     windows: Windows
-    386: i386
-    amd64: x86_64
-checksum:
-  name_template: 'checksums.txt'
-snapshot:
-  name_template: "{{ .Tag }}-next"
-changelog:
+brew: 
+  description: Explore your Github stars
+  folder: Formula
+  github: 
+    name: "homebrew-gkze"
+    owner: gkze
+  homepage: "https://github.com/gkze/stars"
+  test: "system  \"#{bin}/stars -v\""
+builds: 
+  - 
+    env: 
+      - "GO111MODULE=on"
+      - "CGO_ENABLED=0"
+changelog: 
+  filters: 
+    exclude: 
+      - "^docs:"
+      - "^test:"
   sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
+checksum: 
+  name_template: checksums.txt
+sign: 
+  artifacts: checksum
+snapshot: 
+  name_template: "{{ .Tag }}-next"
