@@ -1,4 +1,7 @@
 ---
+before:
+  hooks:
+    - go mod download
 archive: 
   replacements: 
     386: i386
