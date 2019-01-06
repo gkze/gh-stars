@@ -10,6 +10,9 @@ before:
   hooks:
     - go mod download
 brew:
+  commit_author:
+    email: "george.kontridze@gmail.com"
+    name: gkze
   description: Explore your Github stars
   folder: Formula
   github:
@@ -17,9 +20,6 @@ brew:
     owner: gkze
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
-  commit_author:
-    name: gkze
-    email: george.kontridze@gmail.com
 builds:
   -
     env:
