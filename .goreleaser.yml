@@ -1,7 +1,4 @@
 ---
-before:
-  hooks:
-    - go mod download
 archive: 
   replacements: 
     386: i386
@@ -9,6 +6,9 @@ archive:
     darwin: Darwin
     linux: Linux
     windows: Windows
+before: 
+  hooks: 
+    - go mod download
 brew: 
   description: Explore your Github stars
   folder: Formula
