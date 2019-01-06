@@ -1,36 +1,39 @@
 ---
-archive: 
-  replacements: 
+archive:
+  replacements:
     386: i386
     amd64: x86_64
     darwin: Darwin
     linux: Linux
     windows: Windows
-before: 
-  hooks: 
+before:
+  hooks:
     - go mod download
-brew: 
+brew:
   description: Explore your Github stars
   folder: Formula
-  github: 
+  github:
     name: "homebrew-gkze"
     owner: gkze
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
-builds: 
-  - 
-    env: 
+  commit_author:
+    name: gkze
+    email: george.kontridze@gmail.com
+builds:
+  -
+    env:
       - "GO111MODULE=on"
       - "CGO_ENABLED=0"
-changelog: 
-  filters: 
-    exclude: 
+changelog:
+  filters:
+    exclude:
       - "^docs:"
       - "^test:"
   sort: asc
-checksum: 
+checksum:
   name_template: checksums.txt
-sign: 
+sign:
   artifacts: checksum
-snapshot: 
+snapshot:
   name_template: "{{ .Tag }}-next"
