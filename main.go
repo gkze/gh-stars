@@ -21,7 +21,7 @@ func main() {
 	cmdline := cli.NewApp()
 	cmdline.Name = "stars"
 	cmdline.Usage = "Command-line interface to YOUR GitHub stars"
-	cmdline.Version = "0.4.7"
+	cmdline.Version = "0.4.8"
 	cmdline.Commands = []cli.Command{
 		{
 			Name:  "save",
@@ -33,13 +33,21 @@ func main() {
 			},
 		},
 		{
-			Name:  "list-topics",
+			Name:  "topics",
 			Usage: "list all topics of starred projects",
 			Action: func(c *cli.Context) error {
 				sm.SaveIfEmpty()
-				for _, pair := range sm.GetTopics() {
-					fmt.Println(pair.Key, pair.Value)
+				w := tabwriter.NewWriter(os.Stdout, 0, 8, 0, '\t', 0)
+
+				for i, pair := range sm.GetTopics() {
+					if i == 0 {
+						fmt.Fprintf(w, "TOPIC\tOCCURRENCES\n")
+					}
+
+					fmt.Fprintf(w, "%s\t%d\n", pair.Key, pair.Value)
 				}
+
+				w.Flush()
 
 				return nil
 			},
