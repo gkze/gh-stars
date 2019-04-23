@@ -21,7 +21,7 @@ brew install gkze/gkze/stars
 ### Go
 
 ```bash
-go get -u github.com/gkze/stars/cmd
+go get -u github.com/gkze/stars/cmd/stars
 ```
 
 Binaries are available on the releases page.
