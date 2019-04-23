@@ -21,7 +21,7 @@ brew:
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
 builds:
-  - main: ./cmd/main.go
+  - main: ./cmd/stars/stars.go
     binary: stars
     env:
       - "GO111MODULE=on"

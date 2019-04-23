@@ -21,7 +21,7 @@ brew install gkze/gkze/stars
 ### Go
 
 ```bash
-go get -u github.com/gkze/stars
+go get -u github.com/gkze/stars/cmd
 ```
 
 Binaries are available on the releases page.
@@ -33,7 +33,7 @@ You will need a `~/.netrc` with a [personal access token](https://help.github.co
 ```bash
 $ cat ~/.netrc
 machine api.github.com
-    login gkze
+    login [your github username here]
     password [your github token here]
 ```
 
@@ -47,7 +47,7 @@ USAGE:
    stars [global options] command [command options] [arguments...]
 
 VERSION:
-   0.4.9
+   0.4.10
 
 COMMANDS:
      save     Save all stars
