@@ -19,7 +19,8 @@ import (
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
 	"github.com/gkze/stars/utils"
-	"github.com/google/go-github/v19/github"
+	"github.com/gkze/stars/auth"
+	"github.com/google/go-github/v25/github"
 )
 
 // GITHUB - the GitHub API host
@@ -56,7 +57,13 @@ type StarManager struct {
 
 // New - initialize a new starmanager
 func New() (*StarManager, error) {
-	username, password, err := utils.GetNetrcAuth(GITHUB)
+	cfg, err := auth.NewConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	netrcAuth, err := auth.NewNetrc(cfg)
+	username, password, err := netrcAuth.GetAuth(GITHUB)
 	if err != nil {
 		return nil, err
 	}

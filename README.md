@@ -47,15 +47,15 @@ USAGE:
    stars [global options] command [command options] [arguments...]
 
 VERSION:
-   0.4.3
+   0.4.9
 
 COMMANDS:
-     save         Save all stars
-     list-topics  list all topics of starred projects
-     show         Show popular stars given filters
-     clear        Clear local stars cache
-     cleanup      Clean up old stars
-     help, h      Shows a list of commands or help for one command
+     save     Save all stars
+     topics   list all topics of starred projects
+     show     Show popular stars given filters
+     clear    Clear local stars cache
+     cleanup  Clean up old stars
+     help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help

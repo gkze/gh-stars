@@ -12,6 +12,9 @@ import (
 	"github.com/urfave/cli"
 )
 
+// Version is version information dynamically injected at build time
+var Version string
+
 func main() {
 	sm, err := starmanager.New()
 	if err != nil {
@@ -21,7 +24,7 @@ func main() {
 	cmdline := cli.NewApp()
 	cmdline.Name = "stars"
 	cmdline.Usage = "Command-line interface to YOUR GitHub stars"
-	cmdline.Version = "0.4.8"
+	cmdline.Version = Version
 	cmdline.Commands = []cli.Command{
 		{
 			Name:  "save",

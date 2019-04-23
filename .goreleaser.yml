@@ -8,7 +8,7 @@ archive:
     windows: Windows
 before:
   hooks:
-    - go mod download
+    - go mod tidy
 brew:
   commit_author:
     email: "george.kontridze@gmail.com"
@@ -21,10 +21,13 @@ brew:
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
 builds:
-  -
+  - main: ./cmd/main.go
+    binary: stars
     env:
       - "GO111MODULE=on"
       - "CGO_ENABLED=0"
+    ldflags:
+    - -X main.Version={{.Version}}
 changelog:
   filters:
     exclude:
