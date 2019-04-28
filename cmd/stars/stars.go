@@ -23,7 +23,7 @@ func main() {
 
 	cmdline := cli.NewApp()
 	cmdline.Name = "stars"
-	cmdline.Usage = "Command-line interface to YOUR GitHub stars"
+	cmdline.Usage = "Command-line interface to your GitHub stars"
 	cmdline.Version = Version
 	cmdline.Commands = []cli.Command{
 		{
