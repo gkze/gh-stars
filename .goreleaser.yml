@@ -1,11 +1,11 @@
 ---
-archive:
-  replacements:
-    386: i386
-    amd64: x86_64
-    darwin: Darwin
-    linux: Linux
-    windows: Windows
+archives:
+  - replacements:
+      386: i386
+      amd64: x86_64
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
 before:
   hooks:
     - go mod tidy
