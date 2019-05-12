@@ -10,6 +10,7 @@ require (
 	github.com/google/go-github/v25 v25.0.1
 	github.com/jdxcode/netrc v0.0.0-20190329161231-b36f1c51d91d
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/spf13/afero v1.2.2
 	github.com/stretchr/testify v1.3.0
 	github.com/urfave/cli v1.20.0
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect

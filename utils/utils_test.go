@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"os"
 	"testing"
 
+	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,6 +31,47 @@ func TestStringInSlice(t *testing.T) {
 	}
 }
 
+func doTestCreateIfNotExists(
+	t *testing.T,
+	path string,
+	mode os.FileMode,
+	exists bool,
+) {
+	fs := afero.NewMemMapFs()
+
+	err := CreateIfNotExists(path, mode, fs)
+	assert.NoError(t, err)
+
+	fi, err := fs.Stat(path)
+	assert.NoError(t, err)
+
+	switch mode {
+	case os.ModeDir:
+		assert.True(t, fi.Mode().IsDir())
+	case 0:
+		assert.True(t, fi.Mode().IsRegular())
+	}
+}
+
 func TestCreateIfNotExists(t *testing.T) {
-	t.SkipNow()
+	testCases := []struct {
+		path   string
+		mode   os.FileMode
+		exists bool
+	}{
+		{
+			path:   "/tmp/nonexistenttestfile",
+			mode:   0,
+			exists: false,
+		},
+		{
+			path:   "/tmp/nonexistenttestdir",
+			mode:   os.ModeDir,
+			exists: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		doTestCreateIfNotExists(t, tc.path, tc.mode, tc.exists)
+	}
 }

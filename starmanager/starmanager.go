@@ -14,13 +14,13 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/oauth2"
-
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
-	"github.com/gkze/stars/utils"
 	"github.com/gkze/stars/auth"
+	"github.com/gkze/stars/utils"
 	"github.com/google/go-github/v25/github"
+	"github.com/spf13/afero"
+	"golang.org/x/oauth2"
 )
 
 // GITHUB - the GitHub API host
@@ -90,7 +90,7 @@ func New() (*StarManager, error) {
 	}
 
 	for _, p := range toCreate {
-		err := utils.CreateIfNotExists(p.path, p.mode)
+		err := utils.CreateIfNotExists(p.path, p.mode, afero.NewOsFs())
 		if err != nil {
 			log.Printf("An error occurred while attempting to create %s: %v", p.path, err.Error())
 		}
