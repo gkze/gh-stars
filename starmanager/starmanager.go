@@ -175,7 +175,7 @@ func (s *StarManager) SaveStarredPage(pageno int, responses chan *github.Respons
 	)
 	if err != nil {
 		log.Printf(
-			"An error occurred while atresultsting to fetch page %d of %s's GitHub stars!",
+			"An error occurred while attempting to fetch page %d of %s's GitHub stars!",
 			pageno,
 			s.Username,
 		)

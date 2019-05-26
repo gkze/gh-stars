@@ -77,7 +77,7 @@ USAGE:
    stars [global options] command [command options] [arguments...]
 
 VERSION:
-   0.4.14
+   0.4.15
 
 COMMANDS:
      save     Save all stars
