@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"os"
 	"os/user"
 	"path/filepath"
 
@@ -44,6 +45,10 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 
+	if _, err := os.Stat(filepath.Join(curUser.HomeDir, NetrcDefaultFilename)); os.IsNotExist(err) {
+		return nil, fmt.Errorf("$HOME/.netrc does not exist")
+	}
+
 	return &Config{
 		User:     curUser,
 		Filename: NetrcDefaultFilename,
@@ -60,7 +65,7 @@ type NetrcAuth struct {
 	Netrc *netrc.Netrc
 }
 
-// New creates a new netrc auth manager, or returns an error
+// NewNetrc creates a new netrc auth manager, or returns an error
 func NewNetrc(cfg *Config) (*NetrcAuth, error) {
 	auth := &NetrcAuth{Config: cfg}
 
