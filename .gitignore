@@ -16,5 +16,5 @@
 /vendor/
 /Godeps/
 
-./stars
+stars
 dist/
