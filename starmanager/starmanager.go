@@ -3,7 +3,14 @@ package starmanager
 import (
 	"context"
 	"errors"
-	"log"
+	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
+	"github.com/gkze/stars/auth"
+	"github.com/gkze/stars/utils"
+	"github.com/google/go-github/v25/github"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/afero"
+	"golang.org/x/oauth2"
 	"math/rand"
 	"net/url"
 	"os"
@@ -13,27 +20,21 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/asdine/storm"
-	"github.com/asdine/storm/q"
-	"github.com/gkze/stars/auth"
-	"github.com/gkze/stars/utils"
-	"github.com/google/go-github/v25/github"
-	"github.com/spf13/afero"
-	"golang.org/x/oauth2"
 )
 
-// GITHUB - the GitHub API host
-const GITHUB string = "api.github.com"
+const (
+	// GitHub - the GitHub API host
+	GitHub string = "api.github.com"
 
-// CACHEPATH - the path to the cache db file
-const CACHEPATH = ".cache"
+	// CachePath - the path to the cache db file
+	CachePath string = ".cache"
 
-// CACHEFILE - the filename of the db cache
-const CACHEFILE = "stars.db"
+	// CacheFile - the filename of the db cache
+	CacheFile string = "stars.db"
 
-// PAGESIZE - the default response page size (GitHub maximum is 100 so we use that)
-const PAGESIZE int = 100
+	// PageSize - the default response page size (GitHub maximum is 100 so we use that)
+	PageSize int = 100
+)
 
 // Star represents the starred project that is saved locally
 type Star struct {
@@ -46,7 +47,7 @@ type Star struct {
 	Topics      []string `storm:"index"`
 }
 
-// StarManager - the main object that manages a GitHub user's stars
+// StarManager is the central object used to manage stars for a GitHub account
 type StarManager struct {
 	Username string
 	Password string
@@ -63,7 +64,7 @@ func New() (*StarManager, error) {
 	}
 
 	netrcAuth, err := auth.NewNetrc(cfg)
-	username, password, err := netrcAuth.GetAuth(GITHUB)
+	username, password, err := netrcAuth.GetAuth(GitHub)
 	if err != nil {
 		return nil, err
 	}
@@ -79,8 +80,8 @@ func New() (*StarManager, error) {
 		return nil, err
 	}
 
-	cacheDir := filepath.Join(currentUser.HomeDir, CACHEPATH)
-	cacheFullPath := filepath.Join(cacheDir, CACHEFILE)
+	cacheDir := filepath.Join(currentUser.HomeDir, CachePath)
+	cacheFullPath := filepath.Join(cacheDir, CacheFile)
 	toCreate := []struct {
 		path string
 		mode os.FileMode
@@ -168,7 +169,7 @@ func (s *StarManager) SaveStarredPage(pageno int, responses chan *github.Respons
 		s.Username,
 		&github.ActivityListStarredOptions{
 			ListOptions: github.ListOptions{
-				PerPage: PAGESIZE,
+				PerPage: PageSize,
 				Page:    pageno,
 			},
 		},
@@ -216,10 +217,14 @@ func (s *StarManager) SaveAllStars() (bool, error) {
 }
 
 // SaveIfEmpty saves all stars if the local cache is empty
-func (s *StarManager) SaveIfEmpty() {
+func (s *StarManager) SaveIfEmpty() error {
 	if count, _ := s.DB.Count(&Star{}); count == 0 {
-		s.SaveAllStars()
+		if _, err := s.SaveAllStars(); err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
 // KV is a generic struct that maintains a string key - int value pair ( :( ).

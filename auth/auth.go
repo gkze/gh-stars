@@ -9,27 +9,23 @@ import (
 	"github.com/jdxcode/netrc"
 )
 
-// IConfig represents a generic configuration interface
-type IConfig interface{}
+const (
+	// NetrcUsernameField is the value that holds the username in the netrc format
+	NetrcUsernameField string = "login"
 
-// Interface is the interface to the authentication manager
+	// NetrcPasswordField is the value that holds the passwod in the netrc format
+	NetrcPasswordField string = "password"
+
+	// NetrcDefaultFilename is the default name of the netrc configuration file.
+	NetrcDefaultFilename string = ".netrc"
+)
+
+// Interface is a generic authentication interface
 type Interface interface {
-	// New initializes a netrc auth manager, or throws an error
-	New(cfg *IConfig) (*Interface, error)
-
 	// GetAuth retrieves the authentication credentials for a given host, or
 	// throws an error
-	GetAuth(host string) (string, string, error)
+	GetUsernamePassword(host string) (string, string, error)
 }
-
-// NetrcUsernameField is the value that holds the username in the netrc format
-const NetrcUsernameField string = "login"
-
-// NetrcPasswordField is the value that holds the passwod in the netrc format
-const NetrcPasswordField string = "password"
-
-// NetrcDefaultFilename is the default name of the netrc configuration file.
-const NetrcDefaultFilename string = ".netrc"
 
 // Config represents a configuration structure passed to the Netrc object
 // in order to initialize it

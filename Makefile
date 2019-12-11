@@ -16,7 +16,7 @@ test: check
 # Compile into executable binary
 .PHONY: build
 build: test
-	CGO_ENABLED=0 go build -o stars -ldflags "-X main.Version=$(shell cat VERSION)" ./cmd
+	CGO_ENABLED=0 go build -o stars -ldflags "-X main.Version=$(shell cat VERSION)" ./cmd/stars
 
 # Do a release. VERSION needs to be bumped manually
 .PHONY: release
