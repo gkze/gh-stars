@@ -37,6 +37,7 @@ release-major:
 .PHONY: release-minor
 release-minor:
 	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2+1, $$3}' VERSION) > VERSION
+	git add VERSION
 	git commit -Sm "Release $(shell cat VERSION)"
 	$(MAKE) release
 
@@ -44,5 +45,6 @@ release-minor:
 .PHONY: release-patch
 release-patch:
 	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2, $$3+1}' VERSION) > VERSION
+	git add VERSION
 	git commit -Sm "Release $(shell cat VERSION)"
 	$(MAKE) release
