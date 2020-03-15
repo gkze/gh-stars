@@ -29,16 +29,16 @@ release:
 .PHONY: release-major
 release-major:
 	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1+1, $$2, $$3}' VERSION) > VERSION
-	release
+	$(MAKE) release
 
 # Do a minor release
 .PHONY: release-minor
 release-minor:
 	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2+1, $$3}' VERSION) > VERSION
-	release
+	$(MAKE) release
 
 # Do a patch release
 .PHONY: release-patch
 release-patch:
 	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2, $$3+1}' VERSION) > VERSION
-	release
+	$(MAKE) release
