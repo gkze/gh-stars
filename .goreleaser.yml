@@ -1,14 +1,14 @@
 ---
 archives:
-  - replacements:
-      386: i386
-      amd64: x86_64
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
+- replacements:
+    386: i386
+    amd64: x86_64
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
 before:
   hooks:
-    - go mod tidy
+  - go mod tidy
 brews:
 - commit_author:
     email: "george.kontridze@gmail.com"
@@ -21,18 +21,18 @@ brews:
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
 builds:
-  - main: ./cmd/stars/stars.go
-    binary: stars
-    env:
-      - "GO111MODULE=on"
-      - "CGO_ENABLED=0"
-    ldflags:
-    - -X main.Version={{.Version}}
+- main: ./cmd/stars/stars.go
+  binary: stars
+  env:
+  - "GO111MODULE=on"
+  - "CGO_ENABLED=0"
+  ldflags:
+  - -X main.Version={{.Version}}
 changelog:
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+    - "^docs:"
+    - "^test:"
   sort: asc
 checksum:
   name_template: checksums.txt
