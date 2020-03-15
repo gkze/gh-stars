@@ -9,8 +9,8 @@ archives:
 before:
   hooks:
     - go mod tidy
-brew:
-  commit_author:
+brews:
+- commit_author:
     email: "george.kontridze@gmail.com"
     name: gkze
   description: Explore your Github stars
