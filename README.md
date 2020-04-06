@@ -1,5 +1,18 @@
 # stars
 
+[![Actions Test Workflow Widget]][Actions Test Workflow Status]
+[![GoReport Widget]][GoReport Status]
+[![GoDocWidget]][GoDocReference]
+
+[Actions Test Workflow Status]: https://github.com/gkze/stars/actions?query=workflow%3ATest
+[Actions Test Workflow Widget]: https://github.com/gkze/stars/workflows/Test/badge.svg
+
+[GoReport Status]: https://goreportcard.com/report/github.com/gkze/stars
+[GoReport Widget]: https://goreportcard.com/badge/github.com/gkze/stars
+
+[GoDocWidget]: https://godoc.org/github.com/gkze/stars?status.svg
+[GoDocReference]:https://godoc.org/github.com/gkze/stars
+
 A command-line interface to your Github Stars. Some useful features:
 
 * Downloads metadata about all of your starred projects and saves it to disk
@@ -11,9 +24,6 @@ A command-line interface to your Github Stars. Some useful features:
   * Randomly
 * Can limit displayed results as specified
 * Can open queried starred projects in your browser for viewing
-
-**_NOTE:_** Currently only macOS is supported. Support for other platforms will
-be considered if there is demand.
 
 My personal workflow is to save all of my stars, prune old and archived ones,
 and display several random stars in my browser for me to view / explore. This
@@ -70,24 +80,32 @@ machine api.github.com
 ## Usage
 
 ```bash
-NAME:
-   stars - Command-line interface to your GitHub stars
+A CLI written in Golang to facilitate efficient management of a user's
+GitHub starred projects / repositories, a.k.a. "Stars"
 
-USAGE:
-   stars [global options] command [command options] [arguments...]
+Usage:
+  stars [flags]
+  stars [command]
 
-VERSION:
-   0.4.15
+Available Commands:
+  add         Add (star) repositories
+  cleanup     Clean up old stars
+  clear       Clear local stars cache
+  completion  Generate shell completion script
+  help        Help about any command
+  save        Save starred repositories
+  show        Show stars
+  topics      List all topics of all stars
+  version     Show version of stars
 
-COMMANDS:
-     save     Save all stars
-     topics   list all topics of starred projects
-     show     Show popular stars given filters
-     clear    Clear local stars cache
-     cleanup  Clean up old stars
-     help, h  Shows a list of commands or help for one command
+Flags:
+  -w, --concurrency int    Limit goroutines for network I/O operations (default 10)
+  -h, --help               help for stars
+  -o, --log-level string   Log level (default "info")
 
-GLOBAL OPTIONS:
-   --help, -h     show help
-   --version, -v  print the version
+Use "stars [command] --help" for more information about a command.
 ```
+
+# License
+
+[MIT](LICENSE)
