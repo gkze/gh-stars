@@ -4,8 +4,8 @@
 [![GoReport Widget]][GoReport Status]
 [![GoDocWidget]][GoDocReference]
 
-[Actions Test Workflow Status]: https://github.com/gkze/stars/actions?query=workflow%3ATest
-[Actions Test Workflow Widget]: https://github.com/gkze/stars/workflows/Test/badge.svg
+[Actions Test Workflow Status]: https://github.com/gkze/stars/actions?query=workflow%3Aci
+[Actions Test Workflow Widget]: https://github.com/gkze/stars/workflows/ci/badge.svg
 
 [GoReport Status]: https://goreportcard.com/report/github.com/gkze/stars
 [GoReport Widget]: https://goreportcard.com/badge/github.com/gkze/stars
