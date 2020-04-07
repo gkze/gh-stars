@@ -11,23 +11,25 @@ before:
   - go mod tidy
 brews:
 - commit_author:
-    email: "george.kontridze@gmail.com"
+    email: george.kontridze@gmail.com
     name: gkze
   description: Explore your Github stars
   folder: Formula
   github:
-    name: "homebrew-gkze"
+    name: homebrew-gkze
     owner: gkze
   homepage: "https://github.com/gkze/stars"
   test: "system  \"#{bin}/stars -v\""
 builds:
-- main: ./cmd/stars/stars.go
-  binary: stars
+- binary: stars
   env:
-  - "GO111MODULE=on"
-  - "CGO_ENABLED=0"
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+  goarch:
+  - amd64
   ldflags:
-  - -X main.Version={{.Version}}
+  - "-X main.Version={{.Version}}"
+  main: "./cmd/stars/stars.go"
 changelog:
   filters:
     exclude:
@@ -36,7 +38,7 @@ changelog:
   sort: asc
 checksum:
   name_template: checksums.txt
-sign:
-  artifacts: checksum
+signs:
+- artifacts: checksum
 snapshot:
   name_template: "{{ .Tag }}-next"
