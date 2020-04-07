@@ -79,7 +79,7 @@ machine api.github.com
 
 ## Usage
 
-```bash
+```
 A CLI written in Golang to facilitate efficient management of a user's
 GitHub starred projects / repositories, a.k.a. "Stars"
 
