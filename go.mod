@@ -10,17 +10,21 @@ require (
 	github.com/jdxcode/netrc v0.0.0-20190329161231-b36f1c51d91d
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4
-	github.com/sirupsen/logrus v1.4.2
+	github.com/scylladb/go-set v1.0.2
+	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/afero v1.2.2
-	github.com/spf13/cobra v0.0.6
+	github.com/spf13/cobra v0.0.7
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.3.0
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
-	go.etcd.io/bbolt v1.3.3 // indirect
-	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect
+	go.etcd.io/bbolt v1.3.4 // indirect
+	go.uber.org/multierr v1.5.0
+	golang.org/x/crypto v0.0.0-20200406173513-056763e48d71
+	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527 // indirect
+	golang.org/x/sys v0.0.0-20200406155108-e3b113bbe6a4 // indirect
 	google.golang.org/appengine v1.6.5 // indirect
+	mvdan.cc/xurls/v2 v2.1.0
 )
 
 go 1.13
