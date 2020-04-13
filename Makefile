@@ -1,3 +1,17 @@
+VERSION_FILE = VERSION
+
+define bump_major
+	awk -F. '{printf "%s.%s.%s\n", $$1+1, $$2, $$3}' $(VERSION_FILE)
+endef
+
+define bump_minor
+	awk -F. '{printf "%s.%s.%s\n", $$1, $$2+1, $$3}' $(VERSION_FILE)
+endef
+
+define bump_patch
+	awk -F. '{printf "%s.%s.%s\n", $$1, $$2, $$3+1}' $(VERSION_FILE)
+endef
+
 # Display this help message
 .PHONY: help
 help:
@@ -28,23 +42,23 @@ release:
 # Do a major release
 .PHONY: release-major
 release-major:
-	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1+1, $$2, $$3}' VERSION) > VERSION
+	@echo $(shell $(call bump_major)) > VERSION
 	@git add VERSION
-	@git commit -S -m "Release $(shell cat VERSION)"
+	@git commit -S -m "Release $(shell $(call bump_major))"
 	$(MAKE) release
 
 # Do a minor release
 .PHONY: release-minor
 release-minor:
-	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2+1, $$3}' VERSION) > VERSION
+	@echo $(shell $(call bump_minor)) > VERSION
 	@git add VERSION
-	@git commit -S -m "Release $(shell cat VERSION)"
+	@git commit -S -m "Release $(shell $(call bump_minor))"
 	$(MAKE) release
 
 # Do a patch release
 .PHONY: release-patch
 release-patch:
-	@echo $(shell awk -F. '{printf "%s.%s.%s\n", $$1, $$2, $$3+1}' VERSION) > VERSION
+	@echo $(shell $(call bump_patch)) > VERSION
 	@git add VERSION
-	@git commit -S -m "Release $(shell cat VERSION)"
+	@git commit -S -m "Release $(shell $(call bump_patch))"
 	$(MAKE) release
