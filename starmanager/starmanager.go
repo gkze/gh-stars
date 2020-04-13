@@ -250,6 +250,7 @@ func (s *StarManager) starReposFromURLsChan(
 
 			wg.Add(1)
 			go func() { defer wg.Done(); successfulStars <- 1 }()
+			wg.Wait()
 		} else {
 			log.Infof(
 				"%s/%s does not qualify - archived: %t, pushed: %s\n",
@@ -493,7 +494,9 @@ func (s *StarManager) SaveStarredPage(
 		wg.Add(1)
 		go s.SaveStarredRepository(r, &wg)
 	}
+
 	wg.Wait()
+	close(errors)
 
 	return errors
 }
@@ -512,7 +515,7 @@ func (s *StarManager) SaveAllStars(maxConcurrency int) error {
 	// We start from 2 by default because we already fetched the first page
 	// above, we want to avoid repeating that operation
 	startPage := 2
-	startIdx := 0
+	startIdx := startPage
 	numGoroutines := firstPageResponse.LastPage
 
 	// If concurrency is explictly bounded, we alter the parameters to
@@ -520,8 +523,8 @@ func (s *StarManager) SaveAllStars(maxConcurrency int) error {
 	// we start at 0 since we would like to spin up exactly numGoroutunes
 	// goroutines.
 	if maxConcurrency > 0 {
-		numGoroutines = maxConcurrency + startIdx
-		startIdx = startPage
+		numGoroutines = maxConcurrency
+		startIdx = 0
 	}
 
 	log.Info("Attempting to save the rest of the pages...")
