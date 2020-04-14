@@ -28,7 +28,7 @@ builds:
   goarch:
   - amd64
   ldflags:
-  - "-X main.Version={{.Version}}"
+  - -X main.Version={{.Version}}
   main: "./cmd/stars/stars.go"
 changelog:
   filters:
