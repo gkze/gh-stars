@@ -438,7 +438,7 @@ func (s *StarManager) SaveStarredRepository(
 	err := s.db.Save(&Star{
 		PushedAt:    star.GetRepository().GetPushedAt().Time,
 		StarredAt:   star.StarredAt.Time,
-		URL:         star.GetRepository().GetURL(),
+		URL:         star.GetRepository().GetHTMLURL(),
 		Language:    strings.ToLower(star.GetRepository().GetLanguage()),
 		Stargazers:  star.GetRepository().GetStargazersCount(),
 		Description: star.GetRepository().GetDescription(),
