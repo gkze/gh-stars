@@ -667,7 +667,7 @@ func (s *StarManager) RemoveStar(star *Star, wg *sync.WaitGroup) (bool, error) {
 
 	splitPath := strings.Split(starURL.Path, "/")
 
-	_, unstarErr := s.client.Activity.Unstar(s.context, splitPath[2], splitPath[3])
+	_, unstarErr := s.client.Activity.Unstar(s.context, splitPath[1], splitPath[2])
 	if unstarErr != nil {
 		log.Infof("An error occurred while attempting to unstar %s: %s\n",
 			star.URL, unstarErr.Error(),
