@@ -205,7 +205,6 @@ func (s *StarManager) starReposFromURLsChan(
 
 	wg := sync.WaitGroup{}
 	defer wg.Wait()
-
 	then := time.Now().AddDate(0, -notOlderThanMonths, 0)
 
 	for u := range urlsChan {
@@ -250,7 +249,6 @@ func (s *StarManager) starReposFromURLsChan(
 
 			wg.Add(1)
 			go func() { defer wg.Done(); successfulStars <- 1 }()
-			wg.Wait()
 		} else {
 			log.Infof(
 				"%s/%s does not qualify - archived: %t, pushed: %s\n",
