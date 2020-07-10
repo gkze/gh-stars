@@ -15,7 +15,7 @@ brews:
     name: gkze
   description: Explore your Github stars
   folder: Formula
-  github:
+  tap:
     name: homebrew-gkze
     owner: gkze
   homepage: "https://github.com/gkze/stars"
