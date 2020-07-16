@@ -427,6 +427,50 @@ func (s *StarManager) StarRepositoriesFromOrg(
 	return starErr
 }
 
+// StarRepositoriesFromUser stars all of a given user's repositories.
+func (s *StarManager) StarRepositoriesFromUser(
+	username string, notOlderThanMonths, maxConcurrency int,
+) error {
+	repoURLs := []*url.URL{}
+
+	repos, _, err := s.client.Repositories.List(
+		s.context, username, &github.RepositoryListOptions{},
+	)
+	if err != nil {
+		return fmt.Errorf(
+			"error listing repositories for user %s: %w", username, err,
+		)
+	}
+
+	log.Infof("Parsing %d repos into URLs\n", len(repos))
+	for _, repo := range repos {
+		repoURL, err := url.Parse(repo.GetHTMLURL())
+		if err != nil {
+			log.Errorf(
+				"encountered error parsing repo url for %s/%s: %+v",
+				username, repo.GetName(), err,
+			)
+		}
+
+		log.Debugf("Parsed %+v\n", repoURL)
+
+		repoURLs = append(repoURLs, repoURL)
+	}
+
+	count, err := s.StarRepositoriesFromURLs(
+		repoURLs, notOlderThanMonths, maxConcurrency,
+	)
+	if err != nil {
+		return fmt.Errorf(
+			"encountered error starring repositories for user %s: %w",
+			username, err,
+		)
+	}
+
+	log.Infof("Successfully starred %d repos\n", count)
+	return nil
+}
+
 // SaveStarredRepository saves a single starred repository to the local cache.
 func (s *StarManager) SaveStarredRepository(
 	star *github.StarredRepository, wg *sync.WaitGroup,
