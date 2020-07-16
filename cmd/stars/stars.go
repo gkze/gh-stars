@@ -81,7 +81,7 @@ func mkAddStarsCmd() *cobra.Command {
 				(fromURL != "" && fromOrg != "") {
 
 				return errors.New(
-					"Can only pass one of (-u,--from-urls | -o,--from-org | -g,--from-user)",
+					"Can only pass one of: -u/--from-urls, -o/--from-org, -g/--from-user",
 				)
 			}
 
@@ -113,6 +113,11 @@ func mkAddStarsCmd() *cobra.Command {
 				return sm.StarRepositoriesFromOrg(fromOrg, addMonths, concurrency)
 			}
 
+			if fromUser != "" {
+				log.Infof("Attempting to star repositories from %s\n", fromUser)
+				return sm.StarRepositoriesFromUser(fromUser, addMonths, concurrency)
+			}
+
 			return nil
 		},
 	}
@@ -122,7 +127,10 @@ func mkAddStarsCmd() *cobra.Command {
 		&fromURL, "from-url", "u", "", "URL to crawl to add new stars from",
 	)
 	addStarsCmd.PersistentFlags().StringVarP(
-		&fromOrg, "from-org", "r", "", "URL to crawl to add new stars from",
+		&fromOrg, "from-org", "r", "", "Organization to add new stars from",
+	)
+	addStarsCmd.PersistentFlags().StringVarP(
+		&fromUser, "from-user", "s", "", "User to add new stars from",
 	)
 
 	return addStarsCmd
