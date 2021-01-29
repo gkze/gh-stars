@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"strconv"
@@ -66,6 +67,7 @@ func mkAddStarsCmd() *cobra.Command {
 		fromURL   string
 		fromUser  string
 		fromOrg   string
+		fromList  string
 	)
 
 	addStarsCmd := &cobra.Command{
@@ -74,14 +76,17 @@ func mkAddStarsCmd() *cobra.Command {
 		Long:  "Star repositories, specified in various ways",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Exactly one of the options must be passed
-			if (fromURL == "" && fromUser == "" && fromOrg == "" ||
-				fromURL != "" && fromUser != "" && fromOrg != "") ||
-				(fromURL != "" && fromUser != "") ||
-				(fromUser != "" && fromOrg != "") ||
-				(fromURL != "" && fromOrg != "") {
+			fromSpecifiedCount := 0
 
+			for _, source := range []string{fromURL, fromUser, fromOrg, fromList} {
+				if source != "" {
+					fromSpecifiedCount++
+				}
+			}
+
+			if fromSpecifiedCount < 1 {
 				return errors.New(
-					"Can only pass one of: -u/--from-urls, -o/--from-org, -g/--from-user",
+					"Can only pass one of: -u/--from-urls, -o/--from-org, -g/--from-user, -l/--from-list",
 				)
 			}
 
@@ -118,6 +123,25 @@ func mkAddStarsCmd() *cobra.Command {
 				return sm.StarRepositoriesFromUser(fromUser, addMonths, concurrency)
 			}
 
+			if fromList != "" {
+				log.Infof("Attempting to read from %s\n", fromList)
+
+				var reader io.Reader
+				if fromList == "-" {
+					reader = os.Stdin
+				} else {
+					file, err := os.Open(fromList)
+					if err != nil {
+						return err
+					}
+
+					reader = file
+				}
+
+				_, err := sm.StarRepositoriesFromReader(reader, concurrency, addMonths)
+				return err
+			}
+
 			return nil
 		},
 	}
@@ -131,6 +155,9 @@ func mkAddStarsCmd() *cobra.Command {
 	)
 	addStarsCmd.PersistentFlags().StringVarP(
 		&fromUser, "from-user", "s", "", "User to add new stars from",
+	)
+	addStarsCmd.PersistentFlags().StringVarP(
+		&fromList, "from-list", "l", "", "List of github URLs to add new stars from",
 	)
 
 	return addStarsCmd

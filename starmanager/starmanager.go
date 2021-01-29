@@ -1,9 +1,11 @@
 package starmanager
 
 import (
+	"bufio"
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -14,6 +16,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/hashicorp/go-multierror"
 
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
@@ -469,6 +473,57 @@ func (s *StarManager) StarRepositoriesFromUser(
 
 	log.Infof("Successfully starred %d repos\n", count)
 	return nil
+}
+
+// StarRepositoriesFromReader stars repositories from URLs passed in an io.Reader
+func (s *StarManager) StarRepositoriesFromReader(
+	r io.Reader, maxConcurrency, notOlderThanMonths int,
+) (int, error) {
+	urlsCh := make(chan *url.URL)
+	starCountCh := make(chan int)
+	wg := sync.WaitGroup{}
+	var combinedErrors error
+
+	log.Debugf("Spawning %d goroutines\n", maxConcurrency)
+	for i := 0; i < maxConcurrency; i++ {
+		go s.starReposFromURLsChan(&wg, urlsCh, starCountCh, notOlderThanMonths)
+	}
+
+	scanner := bufio.NewScanner(r)
+	for scanner.Scan() {
+		urlStr := scanner.Text()
+		urlStrByDot := strings.Split(urlStr, ".")
+		if urlStrByDot[len(urlStrByDot)-1] == "git" {
+			urlStrByDot = urlStrByDot[:len(urlStrByDot)-1]
+		}
+		urlStr = strings.Join(urlStrByDot, ".")
+
+		u, err := url.Parse(urlStr)
+		if err != nil {
+			multierror.Append(combinedErrors, err)
+		}
+
+		urlsCh <- u
+	}
+	close(urlsCh)
+
+	go func() {
+		wg.Wait()
+		close(starCountCh)
+	}()
+
+	total := 0
+	for count := range starCountCh {
+		total += count
+	}
+
+	if total == 0 {
+		log.Warn("Added 0 repos")
+		return 0, nil
+	}
+
+	log.Infof("Successfully starred %d repos\n", total)
+	return total, combinedErrors
 }
 
 // SaveStarredRepository saves a single starred repository to the local cache.
