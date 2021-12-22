@@ -183,7 +183,11 @@ func (s *StarManager) StarRepository(owner, repo string) error {
 
 	resp, err := s.client.Activity.Star(s.context, owner, repo)
 	if err != nil {
-		log.Errorf("An error occurred starring a repository! %+v", resp)
+		log.Errorf(
+			"An error occurred starring a repository! Error: %+v, Response: %+v\n",
+			err, resp,
+		)
+
 		return err
 	}
 
@@ -574,9 +578,10 @@ func (s *StarManager) SaveStarredPage(
 	)
 	if err != nil {
 		log.Infof(
-			"An error occurred while fetching page %d of %s's GitHub stars!\n",
+			"An error occurred while fetching page %d of %s's GitHub stars: %+v\n",
 			pageno,
 			s.username,
+			err,
 		)
 
 		errors <- err
