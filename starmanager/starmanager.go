@@ -21,8 +21,8 @@ import (
 
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
-	"github.com/gkze/stars/auth"
-	"github.com/gkze/stars/utils"
+	"github.com/gkze/gh-stars/auth"
+	"github.com/gkze/gh-stars/utils"
 	"github.com/google/go-github/v25/github"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/afero"

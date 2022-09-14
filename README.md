@@ -4,14 +4,14 @@
 [![GoReport Widget]][GoReport Status]
 [![GoDocWidget]][GoDocReference]
 
-[Actions Test Workflow Status]: https://github.com/gkze/stars/actions?query=workflow%3Aci
-[Actions Test Workflow Widget]: https://github.com/gkze/stars/workflows/ci/badge.svg
+[Actions Test Workflow Status]: https://github.com/gkze/gh-stars/actions?query=workflow%3Aci
+[Actions Test Workflow Widget]: https://github.com/gkze/gh-stars/workflows/ci/badge.svg
 
-[GoReport Status]: https://goreportcard.com/report/github.com/gkze/stars
-[GoReport Widget]: https://goreportcard.com/badge/github.com/gkze/stars
+[GoReport Status]: https://goreportcard.com/report/github.com/gkze/gh-stars
+[GoReport Widget]: https://goreportcard.com/badge/github.com/gkze/gh-stars
 
-[GoDocWidget]: https://godoc.org/github.com/gkze/stars?status.svg
-[GoDocReference]:https://godoc.org/github.com/gkze/stars
+[GoDocWidget]: https://godoc.org/github.com/gkze/gh-stars?status.svg
+[GoDocReference]:https://godoc.org/github.com/gkze/gh-stars
 
 A command-line interface to your Github Stars. Some useful features:
 
@@ -39,7 +39,7 @@ and [Go](https://golang.org/doc/install) on your system. Then, you can run the
 following commands to build the binary:
 
 ```bash
-git clone git@github.com:gkze/stars.git
+git clone git@github.com:gkze/gh-stars.git
 cd stars
 go build # need Golang 1.11+
 ```
@@ -55,13 +55,13 @@ There are various methods availabel to install `stars` on your system:
 ### Homebrew
 
 ```bash
-brew install gkze/gkze/stars
+brew install gkze/gkze/gh-stars
 ```
 
 ### Go
 
 ```bash
-go get -u github.com/gkze/stars/cmd/stars
+go get -u github.com/gkze/gh-stars/cmd/stars
 ```
 
 Binaries are also available on the releases page.
