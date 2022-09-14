@@ -39,7 +39,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
-github.com/Sereal/Sereal v0.0.0-20190416075407-a9d24ede505a h1:Bko8Pi4GKR2wdRwsTXWkEiH3LUcZ6HpgvgYcMZGMd50=
+github.com/Sereal/Sereal v0.0.0-20220903133728-b4d312952c4c h1:fZYZayNeQmCugRjmTWQFoCpon0iFbESYOpNdMCsf5sQ=
+github.com/Sereal/Sereal v0.0.0-20220903133728-b4d312952c4c/go.mod h1:D0JMgToj/WdxCgd30Kc1UcA9E+WdZoJqeVOuYW7iTBM=
 github.com/asdine/storm v2.1.2+incompatible h1:dczuIkyqwY2LrtXPz8ixMrU/OFgZp71kbKTHGrXYt/Q=
 github.com/asdine/storm v2.1.2+incompatible/go.mod h1:RarYDc9hq1UPLImuiXK3BIWPJLdIygvV3PsInK0FbVQ=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
@@ -62,8 +63,8 @@ github.com/envoyproxy/go-control-plane v0.9.9-0.20201210154907-fd9021fe5dad/go.m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/fatih/set v0.2.1 h1:nn2CaJyknWE/6txyUDGwysr3G5QC6xWB/PtVjPBbeaA=
 github.com/fatih/set v0.2.1/go.mod h1:+RKtMCH+favT2+3YecHGxcc0b4KyVWA1QWWJUs4E0CI=
-github.com/gkze/gh-stars v0.19.24 h1:KyfpK/dmU6+QaffdTw7UsS4cW6K1g/x6efRkMtiLK44=
-github.com/gkze/gh-stars v0.19.24/go.mod h1:X//chwqHvt6Zf+TpmO/ZrRYfpwyldeEUT6/HwUlyl98=
+github.com/gkze/stars v0.19.24 h1:KyfpK/dmU6+QaffdTw7UsS4cW6K1g/x6efRkMtiLK44=
+github.com/gkze/stars v0.19.24/go.mod h1:X//chwqHvt6Zf+TpmO/ZrRYfpwyldeEUT6/HwUlyl98=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=

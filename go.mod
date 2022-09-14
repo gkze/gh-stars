@@ -2,7 +2,7 @@ module github.com/gkze/gh-stars
 
 require (
 	github.com/asdine/storm v2.1.2+incompatible
-	github.com/gkze/gh-stars v0.19.24
+	github.com/gkze/stars v0.19.24
 	github.com/google/go-github/v25 v25.1.3
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/jdxcode/netrc v0.0.0-20210204082910-926c7f70242a
@@ -19,6 +19,7 @@ require (
 )
 
 require (
+	github.com/Sereal/Sereal v0.0.0-20220903133728-b4d312952c4c // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
